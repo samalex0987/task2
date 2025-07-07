@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvey Professional Class AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.querySelector('.burger');
+            const navLinks = document.querySelector('.nav-links');
+            const dropdownTriggers = document.querySelectorAll('.nav-links .group a');
+
+            // Toggle mobile menu
+            burger.addEventListener('click', () => {
+                const expanded = burger.getAttribute('aria-expanded') === 'true';
+                burger.setAttribute('aria-expanded', !expanded);
+                navLinks.classList.toggle('hidden');
+                burger.classList.toggle('toggle-burger');
+            });
+
+            // Toggle dropdowns on mobile
+            dropdownTriggers.forEach(trigger => {
+                const menu = trigger.nextElementSibling;
+                trigger.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) { // Mobile view
+                        e.preventDefault();
+                        menu.classList.toggle('show');
+                        // Close other open dropdowns
+                        dropdownTriggers.forEach(otherTrigger => {
+                            if (otherTrigger !== trigger) {
+                                otherTrigger.nextElementSibling.classList.remove('show');
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Close dropdowns if clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    const isDropdown = e.target.closest('.group') !== null;
+                    if (!isDropdown) {
+                        dropdownTriggers.forEach(trigger => {
+                            trigger.nextElementSibling.classList.remove('show');
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    <style>
+        .burger {
+            height: 1.5rem; /* h-6 */
+            width: 1.5rem;  /* w-6 */
+            cursor: pointer;
+        }
+        .burger span {
+            display: block;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+        }
+        .burger span:nth-child(1) {
+            width: 1.25rem; /* w-5 */
+        }
+        .burger span:nth-child(2) {
+            width: 1rem;   /* w-4 */
+            margin-top: 0.25rem;
+        }
+        .burger span:nth-child(3) {
+            width: 0.75rem; /* w-3 */
+            margin-top: 0.25rem;
+        }
+        .toggle-burger span:nth-child(1) {
+            transform: rotate(45deg) translateY(0.5rem);
+            width: 1.25rem; /* w-5 */
+        }
+        .toggle-burger span:nth-child(2) {
+            opacity: 0;
+        }
+        .toggle-burger span:nth-child(3) {
+            transform: rotate(-45deg) translateY(-0.25rem);
+            width: 1.25rem; /* w-5 */
+        }
+
+        /* Mobile Navigation (dropdown) */
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 4rem;
+            padding-left: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-links a {
+            padding: 1rem;
+            text-align: left;
+            color: white;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Smooth dropdown animation for mobile */
+        .nav-links .group div {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin-left: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background-color: rgba(0, 0, 0, 0.9);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .nav-links .group div.show {
+            max-height: 300px; /* Sufficient height for all items */
+            opacity: 1;
+        }
+
+        .nav-links .group div a {
+            padding-left: 2rem;
+            text-align: left;
+        }
+
+        /* Desktop dropdowns */
+        .md:flex .group div {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            width: 200px;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
+        }
+
+        .md:flex .group:hover div {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-black bg-opacity-90 shadow-md z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-2xl font-bold">Harvey</div>
+                <div class="md:flex md:space-x-6 hidden md:block">
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180">▼</span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Assistant</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Vault</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Knowledge</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Workflows</a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180">▼</span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Legal AI</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Consulting</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Enterprise</a>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-gray-300">Customers</a>
+                    <a href="#" class="hover:text-gray-300">Security</a>
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180">▼</span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Updates</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Press</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Blog</a>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-gray-300">Company</a>
+                </div>
+                <div class="md:block hidden">
+                    <a href="#" class="hover:text-gray-300">Login</a>
+                </div>
+                <div class="md:hidden">
+                    <div class="burger" aria-expanded="false" aria-controls="nav-links">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="nav-links hidden" id="nav-links">
+                        <div class="flex flex-col items-start space-y-4">
+                            <div class="relative group">
+                                <a href="#" class="hover:text-gray-300 flex items-center">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180">▼</span></a>
+                                <div class="hidden group-hover:block bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Assistant</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Vault</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Knowledge</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Workflows</a>
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <a href="#" class="hover:text-gray-300 flex items-center">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180">▼</span></a>
+                                <div class="hidden group-hover:block bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Legal AI</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Consulting</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Enterprise</a>
+                                </div>
+                            </div>
+                            <a href="#" class="hover:text-gray-300">Customers</a>
+                            <a href="#" class="hover:text-gray-300">Security</a>
+                            <div class="relative group">
+                                <a href="#" class="hover:text-gray-300 flex items-center">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180">▼</span></a>
+                                <div class="hidden group-hover:block bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Updates</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Press</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Blog</a>
+                                </div>
+                            </div>
+                            <a href="#" class="hover:text-gray-300">Company</a>
+                            <a href="#" class="hover:text-gray-300">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center text-center pt-20">
+        <div>
+            <h1 class="text-6xl font-extrabold tracking-tight mb-4">Professional Class AI</h1>
+            <p class="text-lg mb-6 max-w-xl mx-auto">Domain-specific AI for law firms, professional service providers, and the Fortune 500.</p>
+            <a href="#" class="bg-white text-black font-semibold py-3 px-6 rounded hover:bg-gray-200 transition">Request a Demo</a>
+        </div>
+    </section>
+</body>
+</html>
