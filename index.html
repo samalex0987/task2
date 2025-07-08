@@ -7,158 +7,170 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const burger = document.querySelector('.burger');
-            const navLinks = document.querySelector('.nav-links');
-            const dropdownTriggers = document.querySelectorAll('.nav-links .group a');
+       document.addEventListener('DOMContentLoaded', () => {
+    const burger = document.querySelector('.burger');
+    const navLinks = document.querySelector('.nav-links');
+    const dropdownTriggers = document.querySelectorAll('.nav-links .group a');
 
-            // Toggle mobile menu
-            burger.addEventListener('click', () => {
-                const expanded = burger.getAttribute('aria-expanded') === 'true';
-                burger.setAttribute('aria-expanded', !expanded);
-                navLinks.classList.toggle('hidden');
-                burger.classList.toggle('toggle-burger');
-            });
+    // Toggle mobile menu
+    burger.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent the click from bubbling to the document
+        const expanded = burger.getAttribute('aria-expanded') === 'true';
+        burger.setAttribute('aria-expanded', !expanded);
+        navLinks.classList.toggle('hidden');
+        burger.classList.toggle('toggle-burger');
+    });
 
-            // Toggle dropdowns on mobile
-            dropdownTriggers.forEach(trigger => {
-                const menu = trigger.nextElementSibling;
-                trigger.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 768) { // Mobile view
-                        e.preventDefault();
-                        menu.classList.toggle('show');
-                        // Close other open dropdowns
-                        dropdownTriggers.forEach(otherTrigger => {
-                            if (otherTrigger !== trigger) {
-                                otherTrigger.nextElementSibling.classList.remove('show');
-                            }
-                        });
+    // Toggle dropdowns on mobile
+    dropdownTriggers.forEach(trigger => {
+        const menu = trigger.nextElementSibling;
+        trigger.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) { // Mobile view
+                e.preventDefault();
+                menu.classList.toggle('show');
+                // Close other open dropdowns
+                dropdownTriggers.forEach(otherTrigger => {
+                    if (otherTrigger !== trigger) {
+                        otherTrigger.nextElementSibling.classList.remove('show');
                     }
                 });
-            });
-
-            // Close dropdowns if clicking outside on mobile
-            document.addEventListener('click', (e) => {
-                if (window.innerWidth <= 768) {
-                    const isDropdown = e.target.closest('.group') !== null;
-                    if (!isDropdown) {
-                        dropdownTriggers.forEach(trigger => {
-                            trigger.nextElementSibling.classList.remove('show');
-                        });
-                    }
-                }
-            });
+            }
         });
+    });
+
+    // Close dropdowns if clicking outside on mobile, but ignore burger clicks
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+            const isBurger = e.target.closest('.burger') !== null;
+            const isDropdown = e.target.closest('.group') !== null;
+            if (!isBurger && !isDropdown) {
+                dropdownTriggers.forEach(trigger => {
+                    trigger.nextElementSibling.classList.remove('show');
+                });
+            }
+        }
+    });
+});
     </script>
     <style>
-        .burger {
-            height: 1.5rem; /* h-6 */
-            width: 1.5rem;  /* w-6 */
-            cursor: pointer;
-        }
-        .burger span {
-            display: block;
-            height: 2px;
-            background-color: white;
-            transition: all 0.3s ease-in-out;
-        }
-        .burger span:nth-child(1) {
-            width: 1.25rem; /* w-5 */
-        }
-        .burger span:nth-child(2) {
-            width: 1rem;   /* w-4 */
-            margin-top: 0.25rem;
-        }
-        .burger span:nth-child(3) {
-            width: 0.75rem; /* w-3 */
-            margin-top: 0.25rem;
-        }
-        .toggle-burger span:nth-child(1) {
-            transform: rotate(45deg) translateY(0.5rem);
-            width: 1.25rem; /* w-5 */
-        }
-        .toggle-burger span:nth-child(2) {
-            opacity: 0;
-        }
-        .toggle-burger span:nth-child(3) {
-            transform: rotate(-45deg) translateY(-0.25rem);
-            width: 1.25rem; /* w-5 */
-        }
+        /* Existing styles (unchanged) */
+.burger {
+    height: 1.5rem; /* h-6 */
+    width: 1.5rem;  /* w-6 */
+    cursor: pointer;
+    position: relative; /* Ensure burger can have a higher z-index */
+    z-index: 30; /* Higher than nav-links (z-index: 20) */
+}
 
-        /* Mobile Navigation (dropdown) */
-        .nav-links {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            padding-top: 4rem;
-            padding-left: 1rem;
-            transition: all 0.3s ease-in-out;
-        }
+.burger span {
+    display: block;
+    height: 2px;
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+}
 
-        .nav-links a {
-            padding: 1rem;
-            text-align: left;
-            color: white;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
+.burger span:nth-child(1) {
+    width: 1.25rem; /* w-5 */
+}
 
-        .nav-links a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
+.burger span:nth-child(2) {
+    width: 1rem;   /* w-4 */
+    margin-top: 0.25rem;
+}
 
-        /* Smooth dropdown animation for mobile */
-        .nav-links .group div {
-            position: relative;
-            top: 0;
-            left: 0;
-            width: 100%;
-            margin-left: 0;
-            border-radius: 0;
-            box-shadow: none;
-            background-color: rgba(0, 0, 0, 0.9);
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-        }
+.burger span:nth-child(3) {
+    width: 0.75rem; /* w-3 */
+    margin-top: 0.25rem;
+}
 
-        .nav-links .group div.show {
-            max-height: 300px; /* Sufficient height for all items */
-            opacity: 1;
-        }
+.toggle-burger span:nth-child(1) {
+    transform: rotate(45deg) translateY(0.5rem);
+    width: 1.25rem; /* w-5 */
+}
 
-        .nav-links .group div a {
-            padding-left: 2rem;
-            text-align: left;
-        }
+.toggle-burger span:nth-child(2) {
+    opacity: 0;
+}
 
-        /* Desktop dropdowns */
-        .md:flex .group div {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.9);
-            width: 200px;
-            border-radius: 0.25rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
-        }
+.toggle-burger span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-0.25rem);
+    width: 1.25rem; /* w-5 */
+}
 
-        .md:flex .group:hover div {
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.2s ease-in-out;
-        }
+/* Mobile Navigation (dropdown) */
+.nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 20; /* Keep z-index for nav-links */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 4rem;
+    padding-left: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-links a {
+    padding: 1rem;
+    text-align: left;
+    color: white;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth dropdown animation for mobile */
+.nav-links .group div {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0.9);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.nav-links .group div.show {
+    max-height: 300px; /* Sufficient height for all items */
+    opacity: 1;
+}
+
+.nav-links .group div a {
+    padding-left: 2rem;
+    text-align: left;
+}
+
+/* Desktop dropdowns */
+.md:flex .group div {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    width: 200px;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
+}
+
+.md:flex .group:hover div {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.2s ease-in-out;
+}
     </style>
 </head>
 <body class="bg-black text-white min-h-screen">
@@ -349,14 +361,18 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .logo-scroll img {
-                height: 40px;
+                height: 100px;
                 margin: 0 20px;
+            }
+
+            .logo-scroll-container h1{
+                 font-size: 30px;
             }
         }
      </style>
      <div class="logo-scroll-container">
         <h1 class="text-6xl font-extrabold tracking-tight mb-4 text-center">Build For Industry Leader</h1>
-        <br><br>
+        
         <div class="logo-scroll">
             <!-- First set of logos -->
             <img src="./logo.png" alt="Bridgewater Logo">
@@ -439,6 +455,7 @@
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
+                width: 500px;
             }
 
             .left-section, .right-section {
