@@ -12,6 +12,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            
         }
 
         /* Navigation Styles */
@@ -130,7 +131,7 @@
         .video-container {
             position: relative;
             width: 100%;
-            max-width: 1500px;
+            max-width: 1300px;
             margin: 0 auto;
             aspect-ratio: 16 / 9;
         }
@@ -148,7 +149,7 @@
             transform: translate(-50%, -50%);
             color: white;
             font-size: 1.5rem;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(121, 119, 119, 0.7);
             padding: 0.5rem 1rem;
             border-radius: 5px;
             cursor: pointer;
@@ -156,7 +157,7 @@
         }
 
         .play-text:hover {
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(103, 102, 102, 0.9);
         }
 
         /* Logo Scroll */
@@ -676,15 +677,33 @@
             }
 
             .carousel-text h2 {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
 
             .carousel-text p {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .carousel-text .btn {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.5rem;
             }
 
             .carousel-item {
-                min-height: 180px;
+                aspect-ratio: 2 / 1;
+            }
+
+            .case-study {
+                font-size: 0.65rem;
+            }
+
+            .quote {
+                font-size: 0.65rem;
+            }
+
+            .carousel-dot {
+                width: 6px;
+                height: 6px;
             }
         }
     </style>
@@ -697,30 +716,30 @@
                 <div class="text-2xl font-bold">SBA</div>
                 <div class="md:flex md:space-x-4 hidden md:block">
                     <div class="relative group">
-                        <a href="#" class="hover:text-gray-300 flex items-center pr-4 text-sm">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-7 text-sm">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
                         <div class="absolute hidden group-hover:block bg-black bg-opacity-90  py-2 w-48 rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Assistant</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Vault</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Knowledge</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Workflows</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Assistant</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Vault</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Knowledge</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Workflows</a>
                         </div>
                     </div>
                     <div class="relative group">
-                        <a href="#" class="hover:text-gray-300 flex items-center pr-4 text-sm">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-7 text-sm">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
                         <div class="absolute hidden group-hover:block bg-black bg-opacity-90  py-2 w-48 rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Legal AI</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Consulting</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Enterprise</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Legal AI</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Consulting</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Enterprise</a>
                         </div>
                     </div>
-                    <a href="#" class="hover:text-gray-300 pr-4 text-sm">Customers</a>
-                    <a href="#" class="hover:text-gray-300 pr-4 text-sm">Security</a>
+                    <a href="#" class="hover:text-gray-300 pr-7 text-sm">Customers</a>
+                    <a href="#" class="hover:text-gray-300 pr-7 text-sm">Security</a>
                     <div class="relative group">
-                        <a href="#" class="hover:text-gray-300 flex items-center pr-4 text-sm">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-7 text-sm">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
                         <div class="absolute hidden group-hover:block bg-black bg-opacity-90 py-2 w-48 rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Updates</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Press</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Blog</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Updates</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Press</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Blog</a>
                         </div>
                     </div>
                     <a href="#" class="hover:text-gray-300 text-sm">Company</a>
@@ -739,18 +758,18 @@
                             <div class="relative group w-full">
                                 <a href="#" class="hover:text-gray-300 flex items-center">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
                                 <div class="hidden bg-black bg-opacity-90 py-2 w-full">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Assistant</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Vault</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Knowledge</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Workflows</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Assistant</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Vault</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Knowledge</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Workflows</a>
                                 </div>
                             </div>
                             <div class="relative group w-full">
                                 <a href="#" class="hover:text-gray-300 flex items-center">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
                                 <div class="hidden bg-black bg-opacity-90 py-2 w-full">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Legal AI</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Consulting</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Enterprise</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Legal AI</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Consulting</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Enterprise</a>
                                 </div>
                             </div>
                             <a href="#" class="hover:text-gray-300">Customers</a>
@@ -758,9 +777,9 @@
                             <div class="relative group w-full">
                                 <a href="#" class="hover:text-gray-300 flex items-center">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
                                 <div class="hidden bg-black bg-opacity-90 py-2 w-full">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Updates</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Press</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Blog</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Updates</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Press</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Blog</a>
                                 </div>
                             </div>
                             <a href="#" class="hover:text-gray-300">Company</a>
@@ -811,7 +830,7 @@
     </div>
 
     <!-- Automation Sections (Consolidated) -->
-    <div class="container">
+    <div class="container" >
         <div class="left-section">
             <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
         </div>
@@ -822,13 +841,13 @@
         </div>
     </div>
     <div class="container">
-        <div class="right-section">
-            <h1>Assistant<br>Tailored to<br>Your Expertise</h1>
-            <p>Delegate complex tasks in natural language to your domain-specific personal assistant.</p>
-            <a href="#">Explore Assistant ></a>
-        </div>
         <div class="left-section">
             <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
+        </div>
+        <div class="right-section">
+            <h1>Rapid Research, Grounded results</h1>
+            <p>Get answers to complex research questions across multiple domains in legeal, regulatory, and tax with accurate citations</p>
+            <a href="#">Explore Knowledge ></a>
         </div>
     </div>
     <div class="container">
@@ -836,12 +855,23 @@
             <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
         </div>
         <div class="right-section">
-            <h1>Assistant<br>Tailored to<br>Your Expertise</h1>
-            <p>Delegate complex tasks in natural language to your domain-specific personal assistant.</p>
-            <a href="#">Explore Assistant ></a>
+            <h1>Secure Poject Workspaces</h1>
+            <p>Upload, store, and analyze thousands of documents using powerful generative AI</p>
+            <a href="#">Explore Vault ></a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="left-section">
+            <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
+        </div>
+        <div class="right-section">
+            <h1>Streamline Your Work</h1>
+            <p>Multi-model agents designed to collaborate with professionals to deliver precise, purpose built work product. More comung soon.</p>
+            <a href="#">Explore Workflows ></a>
         </div>
     </div>
 
+    <br>
     <!-- Unlock Professionals -->
     <div class="containerforunlock">
         <h1 class="hero-title">Unlock Professional<br>Class AI For Your Firm</h1>
@@ -888,15 +918,15 @@
             </div>
         </div>
     </div>
-
+<br><br>
     <!-- Video Carousel -->
     <div class="carousel">
         <div class="carousel-inner">
             <div class="carousel-item">
                 <img src="./slide.jpg" alt="Slide 1">
                 <div class="carousel-text">
-                    <h2>CUATRECASAS</h2>
-                    <p>"With Harvey, you gain the ability to outperform yourself rapidly and almost limitlessly."</p>
+                    <h2>CUATR</h2>
+                    <p>"With Harvey, you gain the ability."</p>
                     <a href="#" class="btn">Read Case Study</a>
                     <a href="#" class="btn secondary">Case Study</a>
                 </div>
@@ -931,8 +961,9 @@
             <div class="carousel-dot" data-slide="1"></div>
             <div class="carousel-dot" data-slide="2"></div>
         </div>
+        <br>
+        <br>
     </div>
-    <br>
 
     <!-- Footer -->
     <footer>
