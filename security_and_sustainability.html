@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvey Professional Class AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Global reset and box-sizing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            
+        }
+
+        /* Navigation Styles */
+        .burger {
+            height: 1.5rem;
+            width: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            z-index: 30;
+        }
+
+        .burger span {
+            display: block;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .burger span:nth-child(1) {
+            width: 1.25rem;
+        }
+
+        .burger span:nth-child(2) {
+            width: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        .burger span:nth-child(3) {
+            width: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .toggle-burger span:nth-child(1) {
+            transform: rotate(45deg) translateY(0.5rem);
+            width: 1.25rem;
+        }
+
+        .toggle-burger span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .toggle-burger span:nth-child(3) {
+            transform: rotate(-45deg) translateY(-0.25rem);
+            width: 1.25rem;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 5rem;
+            padding-left: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-links a {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            color: white;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links .group div {
+            position: relative;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .nav-links .group div.show {
+            max-height: 300px;
+            opacity: 1;
+        }
+
+        .nav-links .group div a {
+            padding-left: 2rem;
+            font-size: 1rem;
+        }
+
+        .md:flex .group div {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            width: 200px;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
+        }
+
+        .md:flex .group:hover div {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        /* Video Section */
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5rem;
+            background-color: rgba(121, 119, 119, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .play-text:hover {
+            background-color: rgba(103, 102, 102, 0.9);
+        }
+
+        /* Logo Scroll */
+        .logo-scroll-container {
+            width: 100%;
+            overflow: hidden;
+            background-color: #000;
+            padding: 2rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-scroll {
+            display: flex;
+            width: max-content;
+            animation: scroll 20s linear infinite;
+        }
+
+        .logo-scroll img {
+            height: 120px;
+            margin: 0 1.5rem;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .logo-scroll img:hover {
+            filter: grayscale(0%);
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .logo-scroll-container:hover .logo-scroll {
+            animation-play-state: paused;
+        }
+
+        
+        /* Unlock Professionals */
+        .containerforunlock {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 3rem;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: white;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+        }
+
+        .feature-description {
+            font-size: 1rem;
+            color: #a0a0a0;
+            line-height: 1.5;
+            max-width: 250px;
+            text-align: left;
+        }
+
+        /* Carousel */
+        .carousel {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: auto;
+            min-height: 300px;
+            position: relative;
+            text-align: center;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .carousel-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+        }
+
+        .carousel-text h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-text p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-text .btn {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .carousel-text .btn.secondary {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            margin-left: 0.5rem;
+        }
+
+        .case-study {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .quote {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background-color: #333;
+            transform: scale(1.2);
+        }
+
+        .carousel-dot:hover {
+            background-color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 2rem 1rem;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .column {
+            margin: 0 1rem;
+            min-width: 120px;
+        }
+
+        .column h3 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .column ul li {
+            margin-bottom: 0.25rem;
+        }
+
+        .column ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .column ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .follow ul li a {
+            color: #666;
+        }
+
+        .follow ul li a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            width: 100%;
+            text-align: center;
+            color: #666;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1280px) {
+            .container {
+                max-width: 90%;
+            }
+
+            .containerforunlock {
+                max-width: 90%;
+            }
+
+            .carousel {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links a {
+                font-size: 1rem;
+            }
+
+            .nav-links .group div a {
+                font-size: 0.9rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .video-container {
+                max-width: 90%;
+            }
+
+            .logo-scroll img {
+                height: 100px;
+                margin: 0 1rem;
+            }
+
+            .container {
+                flex-direction: column;
+                max-width: 90%;
+            }
+
+            .left-section, .right-section {
+                padding: 1.5rem;
+            }
+
+            .right-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .carousel-text h2 {
+                font-size: 1.8rem;
+            }
+
+            .carousel-text p {
+                font-size: 0.9rem;
+            }
+
+            .carousel-item {
+                min-height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                padding-top: 4rem;
+            }
+
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .nav-links .group div a {
+                font-size: 0.85rem;
+                padding-left: 1.5rem;
+            }
+
+            section {
+                padding-top: 4rem;
+            }
+
+            h1.text-6xl {
+                font-size: 2.5rem;
+            }
+
+            p.text-lg {
+                font-size: 1rem;
+                max-width: 90%;
+            }
+
+            .video-container {
+                aspect-ratio: 16 / 9;
+            }
+
+            .play-text {
+                font-size: 1.2rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .logo-scroll-container h1 {
+                font-size: 2rem;
+            }
+
+            .logo-scroll img {
+                height: 80px;
+                margin: 0 0.75rem;
+            }
+
+            .container {
+                min-height: auto;
+            }
+
+            .right-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .right-section p {
+                font-size: 0.9rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .carousel-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-text p {
+                font-size: 0.85rem;
+            }
+
+            .carousel-text .btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .carousel-item {
+                min-height: 200px;
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .column {
+                margin: 0.5rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                padding-top: 3.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            h1.text-6xl {
+                font-size: 2rem;
+            }
+
+            .play-text {
+                font-size: 1rem;
+            }
+
+            .logo-scroll-container h1 {
+                font-size: 1.8rem;
+            }
+
+            .logo-scroll img {
+                height: 60px;
+                margin: 0 0.5rem;
+            }
+
+            .right-section h1 {
+                font-size: 1.3rem;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .carousel-text h2 {
+                font-size: 1.2rem;
+            }
+
+            .carousel-text p {
+                font-size: 0.75rem;
+            }
+
+            .carousel-text .btn {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .carousel-item {
+                aspect-ratio: 2 / 1;
+            }
+
+            .case-study {
+                font-size: 0.65rem;
+            }
+
+            .quote {
+                font-size: 0.65rem;
+            }
+
+            .carousel-dot {
+                width: 6px;
+                height: 6px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-black bg-opacity-90 shadow-md z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-2xl font-bold">SBA</div>
+                <div class="md:flex md:space-x-4 hidden md:block">
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-7 text-sm">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90  py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Assistant</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Vault</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Knowledge</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Workflows</a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-7 text-sm">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90  py-2 w-48 rounded-md shadow-lg">
+                            <a href="./data_and_ai.html" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Data and AI</a>
+                            <a href="./it_and_buisness_automation.html" class="block px-4 py-2 hover:bg-gray-1000 text-sm">IT and Buisness Automation</a>
+                            <a href="./open_hybrid_cloud.html" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Open Hybrid Cloud</a>
+                            <a href="./security_and_sustainability.html" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Security and Sustainability</a>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-gray-300 pr-7 text-sm">Customers</a>
+                    <a href="#" class="hover:text-gray-300 pr-7 text-sm">Security</a>
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-7 text-sm">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Updates</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Press</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-1000 text-sm">Blog</a>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-gray-300 text-sm">Company</a>
+                </div>
+                <div class="md:block hidden">
+                    <a href="#" class="hover:text-gray-300 text-sm">Request a Demo</a>
+                </div>
+                <div class="md:hidden">
+                    <div class="burger" aria-expanded="false" aria-controls="nav-links">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="nav-links hidden" id="nav-links">
+                        <div class="flex flex-col items-start space-y-2">
+                            <div class="relative group w-full">
+                                <a href="#" class="hover:text-gray-300 flex items-center">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                                <div class="hidden bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Assistant</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Vault</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Knowledge</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Workflows</a>
+                                </div>
+                            </div>
+                            <div class="relative group w-full">
+                                <a href="#" class="hover:text-gray-300 flex items-center">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                                <div class="hidden bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Data And AI</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Consulting</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Enterprise</a>
+                                </div>
+                            </div>
+                            <a href="#" class="hover:text-gray-300">Customers</a>
+                            <a href="#" class="hover:text-gray-300">Security</a>
+                            <div class="relative group w-full">
+                                <a href="#" class="hover:text-gray-300 flex items-center">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                                <div class="hidden bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Updates</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Press</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-1000">Blog</a>
+                                </div>
+                            </div>
+                            <a href="#" class="hover:text-gray-300">Company</a>
+                            <a href="#" class="hover:text-gray-300">Request a Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center text-center pt-20 px-4">
+        <div>
+            <h1 class="text-6xl font-extrabold tracking-tight mb-4">Security and Sustainability</h1>
+            <p class="text-lg mb-6 max-w-xl mx-auto">Secure Enterprise Computing</p>
+            <a href="#" class="bg-white text-black font-semibold py-3 px-6 rounded hover:bg-gray-200 transition">Request a Demo</a>
+        </div>
+    </section>
+    
+    <!-- Video Section -->
+    <div class="video-container">
+        <video controls>
+            <source src="./data_and_ai.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="play-text"><i class="fa-solid fa-play"></i></div>
+    </div>
+
+    <br>
+
+    <!-- Unlock Professionals -->
+     <div class="py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-q00 sm:text-4xl">
+        Enable an Open Hybrid Cloud Strategy
+      </h2>
+    </div>
+
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      
+      <!-- Card 1 -->
+      <div class=" p-6 rounded-xl shadow hover:shadow-md transition">
+        <div class="mb-4  w-12 h-12 mx-auto">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-100 text-center mb-2">Unified Cloud Infrastructure</h3>
+        <p class="text-sm text-gray-100 text-center">
+          Simplify hybrid deployments with a consistent platform across public and private clouds — improving workload mobility and governance.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class=" p-6 rounded-xl shadow hover:shadow-md transition">
+        <div class="mb-4 w-12 h-12 mx-auto">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+            <path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-100 text-center mb-2">Open Ecosystem Integration</h3>
+        <p class="text-sm text-gray-100 text-center">
+          Integrate seamlessly with open-source tools and APIs to support innovation while avoiding vendor lock-in.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class=" p-6 rounded-xl shadow hover:shadow-md transition">
+        <div class="mb-4  w-12 h-12 mx-auto">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+            <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-3.31 0-6 2.69-6 6h2a4 4 0 0 1 8 0h2c0-3.31-2.69-6-6-6z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-100 text-center mb-2">Secure & Scalable Architecture</h3>
+        <p class="text-sm text-gray-100 text-center">
+          Ensure enterprise-grade security, compliance, and scalability from edge to core to cloud with a unified approach.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<br><br>
+   
+<section class="max-w-7xl mx-auto px-4 py-16">
+  <h2 class="text-3xl md:text-4xl font-semibold text-center mb-12">
+    Everything You Need to Build an Open Hybrid Cloud<br class="hidden md:block" />
+    in One Unified Platform
+  </h2>
+
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    
+    <!-- Feature 1 -->
+    <div class="bg-neutral-900 p-6 rounded-xl">
+      <div class="mb-4 text-2xl"></div>
+      <h3 class="text-lg font-semibold text-white mb-2">Unified Cloud Management</h3>
+      <p class="text-sm text-gray-300">
+        Centrally manage workloads across private, public, and edge environments to ensure consistency, visibility, and governance.
+      </p>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="bg-neutral-900 p-6 rounded-xl">
+      <div class="mb-4 text-2xl"></div>
+      <h3 class="text-lg font-semibold text-white mb-2">Cloud-Native Flexibility</h3>
+      <p class="text-sm text-gray-300">
+        Empower developers with Kubernetes, containers, and microservices to build and scale cloud-native applications across any cloud.
+      </p>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="bg-neutral-900 p-6 rounded-xl">
+      <div class="mb-4 text-2xl"></div>
+      <h3 class="text-lg font-semibold text-white mb-2">Interoperability & Portability</h3>
+      <p class="text-sm text-gray-300">
+        Avoid vendor lock-in with open standards that allow apps and data to move freely across hybrid and multicloud ecosystems.
+      </p>
+    </div>
+
+    <!-- Feature 4 -->
+    <div class="bg-neutral-900 p-6 rounded-xl">
+      <div class="mb-4 text-2xl"></div>
+      <h3 class="text-lg font-semibold text-white mb-2">Security & Compliance</h3>
+      <p class="text-sm text-gray-300">
+        Maintain enterprise-grade security and meet regulatory needs with built-in controls, identity federation, and audit-ready policies.
+      </p>
+    </div>
+
+    <!-- Feature 5 -->
+    <div class="bg-neutral-900 p-6 rounded-xl">
+      <div class="mb-4 text-2xl"></div>
+      <h3 class="text-lg font-semibold text-white mb-2">Cost Optimization</h3>
+      <p class="text-sm text-gray-300">
+        Gain insights into usage and spend across hybrid environments with intelligent cost tracking, forecasting, and chargeback models.
+      </p>
+    </div>
+
+    <!-- Feature 6 -->
+    <div class="bg-neutral-900 p-6 rounded-xl">
+      <div class="mb-4 text-2xl"></div>
+      <h3 class="text-lg font-semibold text-white mb-2">Edge-to-Core Integration</h3>
+      <p class="text-sm text-gray-300">
+        Extend hybrid capabilities to the edge, enabling real-time processing, AI at the edge, and always-on connectivity from core to cloud.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+  <br><br>
+
+  <section class="bg-[#D5D1DB] py-24 text-center">
+  <div class="max-w-3xl mx-auto px-4">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-serif font-medium text-black mb-8">
+      Your data holds the power.<br />
+      Now let AI unlock its potential.
+    </h2>
+    <a href="#"
+       class="inline-block bg-white text-black font-medium px-6 py-3 rounded-md shadow-sm hover:bg-gray-100 transition">
+      Explore the Platform
+    </a>
+  </div>
+</section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo">H</div>
+        <div class="column">
+            <h3>Platform</h3>
+            <ul>
+                <li><a href="#">Assistant</a></li>
+                <li><a href="#">Vault</a></li>
+                <li><a href="#">Knowledge</a></li>
+                <li><a href="#">Workflows</a></li>
+            </ul>
+        </div>
+        <div class="column">
+            <h3>Solutions</h3>
+            <ul>
+                <li><a href="#">Innovation</a></li>
+                <li><a href="#">In-House</a></li>
+                <li><a href="#">Transactional</a></li>
+                <li><a href="#">Litigation</a></li>
+            </ul>
+        </div>
+        <div class="column">
+            <h3>About</h3>
+            <ul>
+                <li><a href="#">Customers</a></li>
+                <li><a href="#">Security</a></li>
+                <li><a href="#">Company</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Newsroom</a></li>
+                <li><a href="#">Careers</a></li>
+            </ul>
+        </div>
+        <div class="column">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Legal</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Press Kit</a></li>
+            </ul>
+        </div>
+        <div class="column follow">
+            <h3>Follow</h3>
+            <ul>
+                <li><a href="#">LinkedIn</a></li>
+                <li><a href="#">X</a></li>
+            </ul>
+        </div>
+        <div class="copyright">
+            Copyright © 2025 Counsel AI Corporation. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation
+            const burger = document.querySelector('.burger');
+            const navLinks = document.querySelector('.nav-links');
+            const dropdownTriggers = document.querySelectorAll('.nav-links .group a');
+
+            burger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const expanded = burger.getAttribute('aria-expanded') === 'true';
+                burger.setAttribute('aria-expanded', !expanded);
+                navLinks.classList.toggle('hidden');
+                burger.classList.toggle('toggle-burger');
+            });
+
+            dropdownTriggers.forEach(trigger => {
+                const menu = trigger.nextElementSibling;
+                trigger.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        menu.classList.toggle('show');
+                        dropdownTriggers.forEach(otherTrigger => {
+                            if (otherTrigger !== trigger) {
+                                otherTrigger.nextElementSibling.classList.remove('show');
+                            }
+                        });
+                    }
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    const isBurger = e.target.closest('.burger') !== null;
+                    const isDropdown = e.target.closest('.group') !== null;
+                    if (!isBurger && !isDropdown) {
+                        dropdownTriggers.forEach(trigger => {
+                            trigger.nextElementSibling.classList.remove('show');
+                        });
+                    }
+                }
+            });
+
+            // Video
+            const video = document.querySelector('video');
+            const playText = document.querySelector('.play-text');
+            if (video && playText) {
+                playText.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                        playText.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    } else {
+                        video.pause();
+                        playText.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    }
+                });
+            }
+
+            // Carousel
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-item');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const totalSlides = slides.length;
+            let autoSlideInterval;
+
+            function updateCarousel(slideIndex) {
+                currentSlide = slideIndex;
+                const offset = -currentSlide * 100;
+                document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+
+            function nextSlide() {
+                updateCarousel((currentSlide + 1) % totalSlides);
+            }
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    updateCarousel(index);
+                    clearInterval(autoSlideInterval);
+                    startAutoSlide();
+                });
+            });
+
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            }
+
+            startAutoSlide();
+        });
+    </script>
+</body>
+</html>
