@@ -6,323 +6,165 @@
     <title>Harvey Professional Class AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script>
-       document.addEventListener('DOMContentLoaded', () => {
-    const burger = document.querySelector('.burger');
-    const navLinks = document.querySelector('.nav-links');
-    const dropdownTriggers = document.querySelectorAll('.nav-links .group a');
-
-    // Toggle mobile menu
-    burger.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent the click from bubbling to the document
-        const expanded = burger.getAttribute('aria-expanded') === 'true';
-        burger.setAttribute('aria-expanded', !expanded);
-        navLinks.classList.toggle('hidden');
-        burger.classList.toggle('toggle-burger');
-    });
-
-    // Toggle dropdowns on mobile
-    dropdownTriggers.forEach(trigger => {
-        const menu = trigger.nextElementSibling;
-        trigger.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) { // Mobile view
-                e.preventDefault();
-                menu.classList.toggle('show');
-                // Close other open dropdowns
-                dropdownTriggers.forEach(otherTrigger => {
-                    if (otherTrigger !== trigger) {
-                        otherTrigger.nextElementSibling.classList.remove('show');
-                    }
-                });
-            }
-        });
-    });
-
-    // Close dropdowns if clicking outside on mobile, but ignore burger clicks
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768) {
-            const isBurger = e.target.closest('.burger') !== null;
-            const isDropdown = e.target.closest('.group') !== null;
-            if (!isBurger && !isDropdown) {
-                dropdownTriggers.forEach(trigger => {
-                    trigger.nextElementSibling.classList.remove('show');
-                });
-            }
-        }
-    });
-});
-    </script>
     <style>
-        /* Existing styles (unchanged) */
-.burger {
-    height: 1.5rem; /* h-6 */
-    width: 1.5rem;  /* w-6 */
-    cursor: pointer;
-    position: relative; /* Ensure burger can have a higher z-index */
-    z-index: 30; /* Higher than nav-links (z-index: 20) */
-}
+        /* Global reset and box-sizing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-.burger span {
-    display: block;
-    height: 2px;
-    background-color: white;
-    transition: all 0.3s ease-in-out;
-}
+        /* Navigation Styles */
+        .burger {
+            height: 1.5rem;
+            width: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            z-index: 30;
+        }
 
-.burger span:nth-child(1) {
-    width: 1.25rem; /* w-5 */
-}
+        .burger span {
+            display: block;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+        }
 
-.burger span:nth-child(2) {
-    width: 1rem;   /* w-4 */
-    margin-top: 0.25rem;
-}
+        .burger span:nth-child(1) {
+            width: 1.25rem;
+        }
 
-.burger span:nth-child(3) {
-    width: 0.75rem; /* w-3 */
-    margin-top: 0.25rem;
-}
+        .burger span:nth-child(2) {
+            width: 1rem;
+            margin-top: 0.25rem;
+        }
 
-.toggle-burger span:nth-child(1) {
-    transform: rotate(45deg) translateY(0.5rem);
-    width: 1.25rem; /* w-5 */
-}
+        .burger span:nth-child(3) {
+            width: 0.75rem;
+            margin-top: 0.25rem;
+        }
 
-.toggle-burger span:nth-child(2) {
-    opacity: 0;
-}
+        .toggle-burger span:nth-child(1) {
+            transform: rotate(45deg) translateY(0.5rem);
+            width: 1.25rem;
+        }
 
-.toggle-burger span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-0.25rem);
-    width: 1.25rem; /* w-5 */
-}
+        .toggle-burger span:nth-child(2) {
+            opacity: 0;
+        }
 
-/* Mobile Navigation (dropdown) */
-.nav-links {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 20; /* Keep z-index for nav-links */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 4rem;
-    padding-left: 1rem;
-    transition: all 0.3s ease-in-out;
-}
+        .toggle-burger span:nth-child(3) {
+            transform: rotate(-45deg) translateY(-0.25rem);
+            width: 1.25rem;
+        }
 
-.nav-links a {
-    padding: 1rem;
-    text-align: left;
-    color: white;
-    width: 100%;
-    transition: background-color 0.3s ease;
-}
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 5rem;
+            padding-left: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
 
-.nav-links a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
+        .nav-links a {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            color: white;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
 
-/* Smooth dropdown animation for mobile */
-.nav-links .group div {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin-left: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background-color: rgba(0, 0, 0, 0.9);
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-.nav-links .group div.show {
-    max-height: 300px; /* Sufficient height for all items */
-    opacity: 1;
-}
+        .nav-links .group div {
+            position: relative;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
 
-.nav-links .group div a {
-    padding-left: 2rem;
-    text-align: left;
-}
+        .nav-links .group div.show {
+            max-height: 300px;
+            opacity: 1;
+        }
 
-/* Desktop dropdowns */
-.md:flex .group div {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.9);
-    width: 200px;
-    border-radius: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
-}
+        .nav-links .group div a {
+            padding-left: 2rem;
+            font-size: 1rem;
+        }
 
-.md:flex .group:hover div {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.2s ease-in-out;
-}
-    </style>
-</head>
-<body class="bg-black text-white min-h-screen">
-    <!-- Navigation -->
-    <nav class="fixed w-full bg-black bg-opacity-90 shadow-md z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="text-2xl font-bold">Harvey</div>
-                <div class="md:flex md:space-x-6 hidden md:block">
-                    <div class="relative group">
-                        <a href="#" class="hover:text-gray-300 flex items-center pr-5">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
-                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Assistant</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Vault</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Knowledge</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Workflows</a>
-                        </div>
-                    </div>
-                    <div class="relative group">
-                        <a href="#" class="hover:text-gray-300 flex items-center  pr-5">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
-                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Legal AI</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Consulting</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Enterprise</a>
-                        </div>
-                    </div>
-                    <a href="#" class="hover:text-gray-300  pr-5">Customers</a>
-                    <a href="#" class="hover:text-gray-300  pr-5">Security</a>
-                    <div class="relative group">
-                        <a href="#" class="hover:text-gray-300 flex items-center  pr-5">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
-                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Updates</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Press</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">Blog</a>
-                        </div>
-                    </div>
-                    <a href="#" class="hover:text-gray-300">Company</a>
-                </div>
-                <div class="md:block hidden">
-                    <a href="#" class="hover:text-gray-300">Login</a>
-                </div>
-                <div class="md:hidden">
-                    <div class="burger" aria-expanded="false" aria-controls="nav-links">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="nav-links hidden" id="nav-links">
-                        <div class="flex flex-col items-start space-y-4">
-                            <div class="relative group">
-                                <a href="#" class="hover:text-gray-300 flex items-center">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
-                                <div class="hidden group-hover:block bg-black bg-opacity-90 py-2 w-full">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Assistant</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Vault</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Knowledge</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Workflows</a>
-                                </div>
-                            </div>
-                            <div class="relative group">
-                                <a href="#" class="hover:text-gray-300 flex items-center">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
-                                <div class="hidden group-hover:block bg-black bg-opacity-90 py-2 w-full">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Legal AI</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Consulting</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Enterprise</a>
-                                </div>
-                            </div>
-                            <a href="#" class="hover:text-gray-300">Customers</a>
-                            <a href="#" class="hover:text-gray-300">Security</a>
-                            <div class="relative group">
-                                <a href="#" class="hover:text-gray-300 flex items-center">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
-                                <div class="hidden group-hover:block bg-black bg-opacity-90 py-2 w-full">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Updates</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Press</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Blog</a>
-                                </div>
-                            </div>
-                            <a href="#" class="hover:text-gray-300">Company</a>
-                            <a href="#" class="hover:text-gray-300">Login</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+        .md:flex .group div {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            width: 200px;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
+        }
 
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center text-center pt-20">
-        <div>
-            <h1 class="text-6xl font-extrabold tracking-tight mb-4">Professional Class AI</h1>
-            <p class="text-lg mb-6 max-w-xl mx-auto">Domain-specific AI for law firms, professional service providers, and the Fortune 500.</p>
-            <a href="#" class="bg-white text-black font-semibold py-3 px-6 rounded hover:bg-gray-200 transition">Request a Demo</a>
-        </div>
-    </section>
+        .md:flex .group:hover div {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.2s ease-in-out;
+        }
 
-
-    <!-- Video Section -->
-        <style>
-             .video-container {
+        /* Video Section */
+        .video-container {
             position: relative;
             width: 100%;
             max-width: 1500px;
             margin: 0 auto;
+            aspect-ratio: 16 / 9;
         }
+
         .video-container video {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
         }
+
         .play-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
-            font-size: 24px;
-            font-family: Arial, sans-serif;
-            background-color: rgba(139, 132, 132, 0.7);
-            padding: 10px 20px;
+            font-size: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
         .play-text:hover {
-            background-color: rgba(103, 99, 99, 0.9);
+            background-color: rgba(0, 0, 0, 0.9);
         }
-        </style>
-     <div class="video-container">
-        <video >
-            <source src="./nature.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="play-text"><i class="fa-solid fa-play"></i></div>
-    </div>
-    <script>
-        const video = document.querySelector('video');
-        const playText = document.querySelector('.play-text');
-        playText.addEventListener('click', () => {
-            if (video.paused) {
-                video.play();
-                playText.innerHTML = '<i class="fa-solid fa-pause"></i>';
-            } else {
-                video.pause();
-                playText.innerHTML = '<i class="fa-solid fa-play"></i>';
-            }
-        });
-    </script>
-    
-    <!-- logo Section -->
-     <style>
+
+        /* Logo Scroll */
         .logo-scroll-container {
             width: 100%;
             overflow: hidden;
-            background-color: #000000;
-            padding: 20px 0;
+            background-color: #000;
+            padding: 2rem 0;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
@@ -333,8 +175,8 @@
         }
 
         .logo-scroll img {
-            height: 150px;
-            margin: 0 30px;
+            height: 120px;
+            margin: 0 1.5rem;
             object-fit: contain;
             filter: grayscale(100%);
             transition: filter 0.3s ease;
@@ -345,82 +187,34 @@
         }
 
         @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
-        /* Pause animation on hover */
         .logo-scroll-container:hover .logo-scroll {
             animation-play-state: paused;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .logo-scroll img {
-                height: 100px;
-                margin: 0 20px;
-            }
-
-            .logo-scroll-container h1{
-                 font-size: 30px;
-            }
-        }
-     </style>
-     <div class="logo-scroll-container">
-        <h1 class="text-6xl font-extrabold tracking-tight mb-4 text-center">Build For Industry Leader</h1>
-        
-        <div class="logo-scroll">
-            <!-- First set of logos -->
-            <img src="./logo.png" alt="Bridgewater Logo">
-            <img src="./logo.png" alt="Macfarlanes Logo">
-            <img src="./logo.png" alt="KKR Logo">
-            <img src="./logo.png" alt="A&O Shearman Logo">
-            <img src="./logo.png" alt="Gleiss Lutz Logo">
-            <!-- Duplicate set for seamless looping -->
-            <img src="./logo.png" alt="Bridgewater Logo">
-            <img src="./logo.png" alt="Macfarlanes Logo">
-            <img src="./logo.png" alt="KKR Logo">
-            <img src="./logo.png" alt="A&O Shearman Logo">
-            <img src="./logo.png" alt="Gleiss Lutz Logo">
-            <!-- Duplicate set for seamless looping -->
-            <img src="./logo.png" alt="Bridgewater Logo">
-            <img src="./logo.png" alt="Macfarlanes Logo">
-            <img src="./logo.png" alt="KKR Logo">
-            <img src="./logo.png" alt="A&O Shearman Logo">
-            <img src="./logo.png" alt="Gleiss Lutz Logo">
-        </div>
-        <div style="text-align: center;">
-            <a href="#" class="text-1xl text-gray-100  mb-4 text-center" style="color: #666;">See Customers <i class="fa-solid fa-angle-right"></i></a>
-        </div>
-    </div>
-
-
-    <!-- Show automation -->
-
-    <style>
-        
+        /* Automation Sections */
         .container {
             display: flex;
             max-width: 1200px;
-            margin: 50px auto;
+            margin: 3rem auto;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            height: 600px;
+            height: auto;
+            min-height: 400px;
         }
 
         .left-section {
             flex: 1;
-            padding: 40px;
+            padding: 2rem;
             background-color: #fff;
         }
 
         .right-section {
             flex: 1;
-            padding: 40px;
+            padding: 2rem;
             background-color: #1a1a1a;
             color: #fff;
             display: flex;
@@ -431,18 +225,18 @@
         }
 
         .right-section h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            margin-bottom: 1rem;
             font-weight: bold;
         }
 
         .right-section p {
-            font-size: 1.1em;
+            font-size: 1rem;
             max-width: 80%;
         }
 
         .right-section a {
-            margin-top: 20px;
+            margin-top: 1rem;
             color: #1e90ff;
             text-decoration: none;
             font-weight: bold;
@@ -452,298 +246,20 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                width: 500px;
-            }
-
-            .left-section, .right-section {
-                padding: 20px;
-            }
-
-            .right-section h1 {
-                font-size: 1.8em;
-            }
-
-            .right-section p {
-                font-size: 1em;
-            }
-        }
-    </style>
-    <div class="container">
-        <div class="left-section">
-            <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
-        </div>
-        <div class="right-section">
-            <h1>Assistant<br>Tailored to<br>Your Expertise</h1>
-            <p>Delegate complex tasks in natural language to your domain-specific personal assistant.</p>
-            <a href="#">Explore Assistant &gt;</a>
-        </div>
-    </div>
-
-    <!-- Show automation -->
-
-    <style>
-        
-        .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 50px auto;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            height: 600px;
-        }
-
-        .left-section {
-            flex: 1;
-            padding: 40px;
-            background-color: #fff;
-        }
-
-        .right-section {
-            flex: 1;
-            padding: 40px;
-            background-color: #1a1a1a;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .right-section h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .right-section p {
-            font-size: 1.1em;
-            max-width: 80%;
-        }
-
-        .right-section a {
-            margin-top: 20px;
-            color: #1e90ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .right-section a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .left-section, .right-section {
-                padding: 20px;
-            }
-
-            .right-section h1 {
-                font-size: 1.8em;
-            }
-
-            .right-section p {
-                font-size: 1em;
-            }
-        }
-    </style>
-    <div class="container">
-        <div class="left-section">
-            <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
-        </div>
-        <div class="right-section">
-            <h1>Assistant<br>Tailored to<br>Your Expertise</h1>
-            <p>Delegate complex tasks in natural language to your domain-specific personal assistant.</p>
-            <a href="#">Explore Assistant &gt;</a>
-        </div>
-    </div>
-
-    <!-- Show automation -->
-
-    <style>
-        
-        .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 50px auto;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            height: 600px;
-        }
-
-        .left-section {
-            flex: 1;
-            padding: 40px;
-            background-color: #fff;
-        }
-
-        .right-section {
-            flex: 1;
-            padding: 40px;
-            background-color: #1a1a1a;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .right-section h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .right-section p {
-            font-size: 1.1em;
-            max-width: 80%;
-        }
-
-        .right-section a {
-            margin-top: 20px;
-            color: #1e90ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .right-section a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .left-section, .right-section {
-                padding: 20px;
-            }
-
-            .right-section h1 {
-                font-size: 1.8em;
-            }
-
-            .right-section p {
-                font-size: 1em;
-            }
-        }
-    </style>
-    <div class="container">
-        <div class="left-section">
-            <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
-        </div>
-        <div class="right-section">
-            <h1>Assistant<br>Tailored to<br>Your Expertise</h1>
-            <p>Delegate complex tasks in natural language to your domain-specific personal assistant.</p>
-            <a href="#">Explore Assistant &gt;</a>
-        </div>
-    </div>
-
-    <!-- Show automation -->
-
-    <style>
-        
-        .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 50px auto;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            height: 600px;
-        }
-
-        .left-section {
-            flex: 1;
-            padding: 40px;
-            background-color: #fff;
-        }
-
-        .right-section {
-            flex: 1;
-            padding: 40px;
-            background-color: #1a1a1a;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .right-section h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .right-section p {
-            font-size: 1.1em;
-            max-width: 80%;
-        }
-
-        .right-section a {
-            margin-top: 20px;
-            color: #1e90ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .right-section a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .left-section, .right-section {
-                padding: 20px;
-            }
-
-            .right-section h1 {
-                font-size: 1.8em;
-            }
-
-            .right-section p {
-                font-size: 1em;
-            }
-        }
-    </style>
-    <div class="container">
-        <div class="left-section">
-            <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
-        </div>
-        <div class="right-section">
-            <h1>Assistant<br>Tailored to<br>Your Expertise</h1>
-            <p>Delegate complex tasks in natural language to your domain-specific personal assistant.</p>
-            <a href="#">Explore Assistant &gt;</a>
-        </div>
-    </div>
-
-
-    <!-- Unlock professionals -->
-
-    <div class="containerforunlock">
-        <style>
-             .containerforunlock {
+        /* Unlock Professionals */
+        .containerforunlock {
             max-width: 1600px;
             width: 100%;
+            margin: 0 auto;
             text-align: center;
+            padding: 2rem 1rem;
         }
 
         .hero-title {
             font-size: 2.5rem;
             font-weight: 400;
             line-height: 1.2;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
             color: #ffffff;
             letter-spacing: -0.02em;
         }
@@ -751,8 +267,8 @@
         .features-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-            margin-top: 2rem;
+            gap: 2rem;
+            margin-top: 1.5rem;
         }
 
         .feature-card {
@@ -766,7 +282,7 @@
         .feature-icon {
             width: 48px;
             height: 48px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -783,9 +299,8 @@
         .feature-title {
             font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             color: #ffffff;
-            line-height: 1.3;
         }
 
         .feature-description {
@@ -795,34 +310,521 @@
             max-width: 250px;
         }
 
+        /* Carousel */
+        .carousel {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: auto;
+            min-height: 300px;
+            position: relative;
+            text-align: center;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .carousel-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+        }
+
+        .carousel-text h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-text p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-text .btn {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .carousel-text .btn.secondary {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            margin-left: 0.5rem;
+        }
+
+        .case-study {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .quote {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background-color: #333;
+            transform: scale(1.2);
+        }
+
+        .carousel-dot:hover {
+            background-color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 2rem 1rem;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .column {
+            margin: 0 1rem;
+            min-width: 120px;
+        }
+
+        .column h3 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .column ul li {
+            margin-bottom: 0.25rem;
+        }
+
+        .column ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .column ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .follow ul li a {
+            color: #666;
+        }
+
+        .follow ul li a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            width: 100%;
+            text-align: center;
+            color: #666;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1280px) {
+            .container {
+                max-width: 90%;
+            }
+
+            .containerforunlock {
+                max-width: 90%;
+            }
+
+            .carousel {
+                max-width: 90%;
+            }
+        }
+
         @media (max-width: 1024px) {
+            .nav-links a {
+                font-size: 1rem;
+            }
+
+            .nav-links .group div a {
+                font-size: 0.9rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 2.5rem;
+                gap: 1.5rem;
             }
-            
-            .hero-title {
-                font-size: 2.5rem;
+
+            .video-container {
+                max-width: 90%;
+            }
+
+            .logo-scroll img {
+                height: 100px;
+                margin: 0 1rem;
+            }
+
+            .container {
+                flex-direction: column;
+                max-width: 90%;
+            }
+
+            .left-section, .right-section {
+                padding: 1.5rem;
+            }
+
+            .right-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .carousel-text h2 {
+                font-size: 1.8rem;
+            }
+
+            .carousel-text p {
+                font-size: 0.9rem;
+            }
+
+            .carousel-item {
+                min-height: 250px;
             }
         }
 
         @media (max-width: 768px) {
+            .nav-links {
+                padding-top: 4rem;
+            }
+
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .nav-links .group div a {
+                font-size: 0.85rem;
+                padding-left: 1.5rem;
+            }
+
+            section {
+                padding-top: 4rem;
+            }
+
+            h1.text-6xl {
+                font-size: 2.5rem;
+            }
+
+            p.text-lg {
+                font-size: 1rem;
+                max-width: 90%;
+            }
+
+            .video-container {
+                aspect-ratio: 16 / 9;
+            }
+
+            .play-text {
+                font-size: 1.2rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .logo-scroll-container h1 {
+                font-size: 2rem;
+            }
+
+            .logo-scroll img {
+                height: 80px;
+                margin: 0 0.75rem;
+            }
+
+            .container {
+                min-height: auto;
+            }
+
+            .right-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .right-section p {
+                font-size: 0.9rem;
+            }
+
             .features-grid {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 1rem;
             }
-            
-            .hero-title {
-                font-size: 2rem;
-                margin-bottom: 3rem;
+
+            .carousel-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-text p {
+                font-size: 0.85rem;
+            }
+
+            .carousel-text .btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .carousel-item {
+                min-height: 200px;
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .column {
+                margin: 0.5rem 0;
             }
         }
-        </style>
-        <h1 class="hero-title">
-            Unlock Professional<br>
-            Class AI For Your Firm
-        </h1>
-        
+
+        @media (max-width: 480px) {
+            .nav-links {
+                padding-top: 3.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            h1.text-6xl {
+                font-size: 2rem;
+            }
+
+            .play-text {
+                font-size: 1rem;
+            }
+
+            .logo-scroll-container h1 {
+                font-size: 1.8rem;
+            }
+
+            .logo-scroll img {
+                height: 60px;
+                margin: 0 0.5rem;
+            }
+
+            .right-section h1 {
+                font-size: 1.3rem;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .carousel-text h2 {
+                font-size: 1.3rem;
+            }
+
+            .carousel-text p {
+                font-size: 0.8rem;
+            }
+
+            .carousel-item {
+                min-height: 180px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-black bg-opacity-90 shadow-md z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-2xl font-bold">Harvey</div>
+                <div class="md:flex md:space-x-4 hidden md:block">
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-4 text-sm">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Assistant</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Vault</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Knowledge</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Workflows</a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-4 text-sm">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Legal AI</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Consulting</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Enterprise</a>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-gray-300 pr-4 text-sm">Customers</a>
+                    <a href="#" class="hover:text-gray-300 pr-4 text-sm">Security</a>
+                    <div class="relative group">
+                        <a href="#" class="hover:text-gray-300 flex items-center pr-4 text-sm">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                        <div class="absolute hidden group-hover:block bg-black bg-opacity-90 mt-2 py-2 w-48 rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Updates</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Press</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700 text-sm">Blog</a>
+                        </div>
+                    </div>
+                    <a href="#" class="hover:text-gray-300 text-sm">Company</a>
+                </div>
+                <div class="md:block hidden">
+                    <a href="#" class="hover:text-gray-300 text-sm">Login</a>
+                </div>
+                <div class="md:hidden">
+                    <div class="burger" aria-expanded="false" aria-controls="nav-links">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="nav-links hidden" id="nav-links">
+                        <div class="flex flex-col items-start space-y-2">
+                            <div class="relative group w-full">
+                                <a href="#" class="hover:text-gray-300 flex items-center">Platform <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                                <div class="hidden bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Assistant</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Vault</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Knowledge</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Workflows</a>
+                                </div>
+                            </div>
+                            <div class="relative group w-full">
+                                <a href="#" class="hover:text-gray-300 flex items-center">Solutions <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                                <div class="hidden bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Legal AI</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Consulting</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Enterprise</a>
+                                </div>
+                            </div>
+                            <a href="#" class="hover:text-gray-300">Customers</a>
+                            <a href="#" class="hover:text-gray-300">Security</a>
+                            <div class="relative group w-full">
+                                <a href="#" class="hover:text-gray-300 flex items-center">News <span class="ml-1 transition-transform duration-200 group-hover:rotate-180"><i class="fa-solid fa-angle-down"></i></span></a>
+                                <div class="hidden bg-black bg-opacity-90 py-2 w-full">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Updates</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Press</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">Blog</a>
+                                </div>
+                            </div>
+                            <a href="#" class="hover:text-gray-300">Company</a>
+                            <a href="#" class="hover:text-gray-300">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center text-center pt-20 px-4">
+        <div>
+            <h1 class="text-6xl font-extrabold tracking-tight mb-4">Professional Class AI</h1>
+            <p class="text-lg mb-6 max-w-xl mx-auto">Domain-specific AI for law firms, professional service providers, and the Fortune 500.</p>
+            <a href="#" class="bg-white text-black font-semibold py-3 px-6 rounded hover:bg-gray-200 transition">Request a Demo</a>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <div class="video-container">
+        <video poster="https://via.placeholder.com/1500x844">
+            <source src="https://example.com/nature.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="play-text"><i class="fa-solid fa-play"></i></div>
+    </div>
+
+    <!-- Logo Section -->
+    <div class="logo-scroll-container">
+        <h1 class="text-6xl font-extrabold tracking-tight mb-4 text-center">Build For Industry Leader</h1>
+        <div class="logo-scroll">
+            <img src="https://via.placeholder.com/150x120" alt="Bridgewater Logo">
+            <img src="https://via.placeholder.com/150x120" alt="Macfarlanes Logo">
+            <img src="https://via.placeholder.com/150x120" alt="KKR Logo">
+            <img src="https://via.placeholder.com/150x120" alt="A&O Shearman Logo">
+            <img src="https://via.placeholder.com/150x120" alt="Gleiss Lutz Logo">
+            <img src="https://via.placeholder.com/150x120" alt="Bridgewater Logo">
+            <img src="https://via.placeholder.com/150x120" alt="Macfarlanes Logo">
+            <img src="https://via.placeholder.com/150x120" alt="KKR Logo">
+            <img src="https://via.placeholder.com/150x120" alt="A&O Shearman Logo">
+            <img src="https://via.placeholder.com/150x120" alt="Gleiss Lutz Logo">
+        </div>
+        <div class="text-center mt-4">
+            <a href="#" class="text-sm text-gray-400 hover:text-gray-200">See Customers <i class="fa-solid fa-angle-right"></i></a>
+        </div>
+    </div>
+
+    <!-- Automation Sections (Consolidated) -->
+    <div class="container">
+        <div class="left-section">
+            <p class="text-black">As requested, I am providing a detailed summary of the main interim operating covenants that restrict AvaantiBio during the period between the signing and closing of the merger agreement with Solid Biosciences Inc. <strong>1</strong> These covenants are designed to ensure that AvaantiBio maintains its business operations in a manner consistent with past practices and does not undertake any actions that could adversely affect the merger. <strong>2 3</strong> Conduct of Business in the Ordinary Course AvaantiBio is required to use commercially reasonable...</p>
+        </div>
+        <div class="right-section">
+            <h1>Assistant<br>Tailored to<br>Your Expertise</h1>
+            <p>Delegate complex tasks in natural language to your domain-specific personal assistant.</p>
+            <a href="#">Explore Assistant ></a>
+        </div>
+    </div>
+
+    <!-- Unlock Professionals -->
+    <div class="containerforunlock">
+        <h1 class="hero-title">Unlock Professional<br>Class AI For Your Firm</h1>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">
@@ -831,11 +833,8 @@
                     </svg>
                 </div>
                 <h3 class="feature-title">Enterprise-Grade Security</h3>
-                <p class="feature-description">
-                    Robust, industry-standard protection with zero training on your data.
-                </p>
+                <p class="feature-description">Robust, industry-standard protection with zero training on your data.</p>
             </div>
-            
             <div class="feature-card">
                 <div class="feature-icon">
                     <svg viewBox="0 0 24 24">
@@ -845,11 +844,8 @@
                     </svg>
                 </div>
                 <h3 class="feature-title">Agentic Workflows</h3>
-                <p class="feature-description">
-                    Produce expert-quality work product for complex workflows, with no prompting required.
-                </p>
+                <p class="feature-description">Produce expert-quality work product for complex workflows, with no prompting required.</p>
             </div>
-            
             <div class="feature-card">
                 <div class="feature-icon">
                     <svg viewBox="0 0 24 24">
@@ -857,11 +853,8 @@
                     </svg>
                 </div>
                 <h3 class="feature-title">Domain-Specific Models</h3>
-                <p class="feature-description">
-                    High-performing custom models built for complex professional work.
-                </p>
+                <p class="feature-description">High-performing custom models built for complex professional work.</p>
             </div>
-            
             <div class="feature-card">
                 <div class="feature-icon">
                     <svg viewBox="0 0 24 24">
@@ -871,111 +864,16 @@
                     </svg>
                 </div>
                 <h3 class="feature-title">24/7 Customer Support</h3>
-                <p class="feature-description">
-                    White glove support to resolve issues and maximize your Harvey experience.
-                </p>
+                <p class="feature-description">White glove support to resolve issues and maximize your Harvey experience.</p>
             </div>
         </div>
     </div>
-    <br><br>
-    <br><br>
-    <br><br>
-    
-    <!-- Video Carousal -->
-      <div class="carousel">
-        <style>
-            .carousel {
-                position: relative;
-                max-width: 1200px;
-                margin: 0 auto;
-                overflow: hidden;
-            }
-            .carousel-inner {
-                display: flex;
-                transition: transform 0.5s ease;
-            }
-            .carousel-item {
-                min-width: 100%;
-                height: 400px;
-                position: relative;
-                text-align: center;
-            }
-            .carousel-item img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                opacity: 0.7;
-            }
-            .carousel-text {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-            }
-            .carousel-text h2 {
-                font-size: 2.5em;
-                margin-bottom: 10px;
-            }
-            .carousel-text p {
-                font-size: 1.2em;
-                margin-bottom: 20px;
-            }
-            .carousel-text .btn {
-                padding: 10px 20px;
-                background-color: #fff;
-                color: #1a1a1a;
-                text-decoration: none;
-                border-radius: 5px;
-            }
-            .carousel-text .btn.secondary {
-                background-color: transparent;
-                color: #fff;
-                border: 1px solid #fff;
-                margin-left: 10px;
-            }
-            .case-study {
-                position: absolute;
-                bottom: 20px;
-                left: 20px;
-                background-color: rgba(255, 255, 255, 0.2);
-                padding: 5px 10px;
-                border-radius: 5px;
-                color: #fff;
-            }
-            .quote {
-                position: absolute;
-                bottom: 20px;
-                right: 20px;
-                color: #ccc;
-            }
-            
-            /* Dot indicators styles */
-            .carousel-indicators {
-                display: flex;
-                justify-content: center;
-                margin-top: 20px;
-                gap: 10px;
-            }
-            .carousel-dot {
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                background-color: #ccc;
-                cursor: pointer;
-                transition: background-color 0.3s ease, transform 0.3s ease;
-            }
-            .carousel-dot.active {
-                background-color: #333;
-                transform: scale(1.2);
-            }
-            .carousel-dot:hover {
-                background-color: #666;
-            }
-        </style>
+
+    <!-- Video Carousel -->
+    <div class="carousel">
         <div class="carousel-inner">
             <div class="carousel-item">
-                <img src="./slide.jpg" alt="Slide 1">
+                <img src="https://via.placeholder.com/1200x300" alt="Slide 1">
                 <div class="carousel-text">
                     <h2>CUATRECASAS</h2>
                     <p>"With Harvey, you gain the ability to outperform yourself rapidly and almost limitlessly."</p>
@@ -986,7 +884,7 @@
                 <div class="quote">Omar Puertas-Alvarez, Partner</div>
             </div>
             <div class="carousel-item">
-                <img src="./slide.jpg" alt="Slide 2">
+                <img src="https://via.placeholder.com/1200x300" alt="Slide 2">
                 <div class="carousel-text">
                     <h2>CLIEUKSC</h2>
                     <p>"Within spring, fiction Demoo Perinor Katecholiione."</p>
@@ -997,7 +895,7 @@
                 <div class="quote">Domo Riberos Alvors Rander</div>
             </div>
             <div class="carousel-item">
-                <img src="./slide.jpg" alt="Slide 3">
+                <img src="https://via.placeholder.com/1200x300" alt="Slide 3">
                 <div class="carousel-text">
                     <h2>CUATRECASAS</h2>
                     <p>"This ability to outperform yourself rapidly and almost limitlessly."</p>
@@ -1008,121 +906,15 @@
                 <div class="quote">Omar Puertas-Alvarez, Partner</div>
             </div>
         </div>
-        
-        <!-- Dot indicators -->
         <div class="carousel-indicators">
             <div class="carousel-dot active" data-slide="0"></div>
             <div class="carousel-dot" data-slide="1"></div>
             <div class="carousel-dot" data-slide="2"></div>
-            <br>
         </div>
     </div>
 
-    <br><br>
-    <br><br>
-    <br><br>
-    
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-item');
-        const dots = document.querySelectorAll('.carousel-dot');
-        const totalSlides = slides.length;
-        let autoSlideInterval;
-
-        // Function to update the carousel position and active dot
-        function updateCarousel(slideIndex) {
-            currentSlide = slideIndex;
-            const offset = -currentSlide * 100;
-            document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
-            
-            // Update active dot
-            dots.forEach((dot, index) => {
-                if (index === currentSlide) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-
-        // Function to go to next slide
-        function nextSlide() {
-            const nextIndex = (currentSlide + 1) % totalSlides;
-            updateCarousel(nextIndex);
-        }
-
-        // Add click listeners to dots
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                updateCarousel(index);
-                // Reset auto-slide timer when user clicks a dot
-                clearInterval(autoSlideInterval);
-                startAutoSlide();
-            });
-        });
-
-        // Start auto-slide functionality
-        function startAutoSlide() {
-            autoSlideInterval = setInterval(nextSlide, 5000);
-        }
-
-        // Initialize the carousel
-        startAutoSlide();
-    </script>
-
     <!-- Footer -->
-     <footer>
-        <style>
-            footer {
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 40px 20px;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .logo {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        .column {
-            margin: 0 20px;
-        }
-        .column h3 {
-            color: #666;
-            font-size: 1em;
-            margin-bottom: 10px;
-        }
-        .column ul {
-            list-style: none;
-            padding: 0;
-        }
-        .column ul li {
-            margin-bottom: 5px;
-        }
-        .column ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .column ul li a:hover {
-            text-decoration: underline;
-        }
-        .follow ul li a {
-            display: block;
-            color: #666;
-        }
-        .follow ul li a:hover {
-            color: #fff;
-        }
-        .copyright {
-            width: 100%;
-            text-align: center;
-            color: #666;
-            margin-top: 20px;
-            font-size: 0.8em;
-        }
-        </style>
+    <footer>
         <div class="logo">H</div>
         <div class="column">
             <h3>Platform</h3>
@@ -1172,5 +964,99 @@
             Copyright © 2025 Counsel AI Corporation. All rights reserved.
         </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation
+            const burger = document.querySelector('.burger');
+            const navLinks = document.querySelector('.nav-links');
+            const dropdownTriggers = document.querySelectorAll('.nav-links .group a');
+
+            burger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const expanded = burger.getAttribute('aria-expanded') === 'true';
+                burger.setAttribute('aria-expanded', !expanded);
+                navLinks.classList.toggle('hidden');
+                burger.classList.toggle('toggle-burger');
+            });
+
+            dropdownTriggers.forEach(trigger => {
+                const menu = trigger.nextElementSibling;
+                trigger.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        menu.classList.toggle('show');
+                        dropdownTriggers.forEach(otherTrigger => {
+                            if (otherTrigger !== trigger) {
+                                otherTrigger.nextElementSibling.classList.remove('show');
+                            }
+                        });
+                    }
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    const isBurger = e.target.closest('.burger') !== null;
+                    const isDropdown = e.target.closest('.group') !== null;
+                    if (!isBurger && !isDropdown) {
+                        dropdownTriggers.forEach(trigger => {
+                            trigger.nextElementSibling.classList.remove('show');
+                        });
+                    }
+                }
+            });
+
+            // Video
+            const video = document.querySelector('video');
+            const playText = document.querySelector('.play-text');
+            if (video && playText) {
+                playText.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                        playText.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    } else {
+                        video.pause();
+                        playText.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    }
+                });
+            }
+
+            // Carousel
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-item');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const totalSlides = slides.length;
+            let autoSlideInterval;
+
+            function updateCarousel(slideIndex) {
+                currentSlide = slideIndex;
+                const offset = -currentSlide * 100;
+                document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+
+            function nextSlide() {
+                updateCarousel((currentSlide + 1) % totalSlides);
+            }
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    updateCarousel(index);
+                    clearInterval(autoSlideInterval);
+                    startAutoSlide();
+                });
+            });
+
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            }
+
+            startAutoSlide();
+        });
+    </script>
 </body>
 </html>
